@@ -45,12 +45,12 @@ namespace Service.Services
 
         private void DoWork()
         {
-            var number = random.Next();
+            var number = random.Next(20);
 
             var processor = services.GetRequiredService<TaskProcessor>();
             var queue = services.GetRequiredService<IBackgroundTaskQueue>();
 
-            queue.QueueBackgroundWorlItem(token => 
+            queue.QueueBackgroundWorlItem(token =>
             {
                 return processor.RunAsync(number, token);
             });
@@ -74,9 +74,9 @@ namespace Service.Services
             }
 
             timer = new Timer(
-                e => ProcessTask(), 
-                null, 
-                TimeSpan.Zero, 
+                e => ProcessTask(),
+                null,
+                TimeSpan.Zero,
                 TimeSpan.FromSeconds(interval));
 
             return Task.CompletedTask;
