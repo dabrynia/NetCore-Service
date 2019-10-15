@@ -1,5 +1,5 @@
 {
   "WorkersCount": 2,
   "RunInterval": 5,
-  "ResultPath": "D:\\VS Prog\\ITVDN\\Service\\result.txt"
+  "ResultPath": "D:\\result.txt"
 }

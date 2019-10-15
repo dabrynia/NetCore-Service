@@ -28,6 +28,7 @@ namespace Service
                 .ConfigureServices(services =>
                 {
                     services.AddHostedService<TaskSchedulerService>();
+                    services.AddHostedService<WorkerService>();
 
                     services.AddSingleton<Settings>();
                     services.AddSingleton<TaskProcessor>();
