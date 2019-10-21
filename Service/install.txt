@@ -1,0 +1,4 @@
+﻿sc create Service binpath="D:\VS Prog\NetCore-Service\Service\bin\Debug\net472\Service.exe"
+sc start
+sc stop
+sc delete Service
