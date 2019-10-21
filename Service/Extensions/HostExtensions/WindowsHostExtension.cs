@@ -3,7 +3,7 @@ using Service.WindowsServices;
 using System;
 using System.Threading.Tasks;
 
-namespace Service.Extensions.HostExtension
+namespace Service.Extensions.HostExtensions
 {
     public static class WindowsHostExtension
     {

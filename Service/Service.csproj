@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.0;net471</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;net472</TargetFrameworks>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
@@ -13,7 +13,20 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+  </ItemGroup>
+
+  <!--В зависимости под какой framework собираем, указываем какие файлы будут участвовать в проекте-->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0" />
+    <Compile Remove="Extensions\HostExtensions\HostExtension.cs" />
+    <None Include="Extensions\HostExtensions\HostExtension.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <Compile Remove="WindowsServices\**\*.cs" />
+    <None Include="WindowsServices\**\*.cs" />
+    <Compile Remove="Extensions\HostExtensions\WindowsHostExtension.cs" />
+    <None Include="Extensions\HostExtensions\WindowsHostExtension.cs" />
   </ItemGroup>
 
   <ItemGroup>

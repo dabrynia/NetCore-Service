@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace Service.Extensions.HostExtension
+namespace Service.Extensions.HostExtensions
 {
     public static class HostExtension
     {
