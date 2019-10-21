@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Service.Extensions.HostExtension;
 using Service.Models;
 using Service.Services;
 using Service.Services.TaskQueue;
@@ -35,7 +36,7 @@ namespace Service
                     services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
                 });
 
-            await builder.RunConsoleAsync();
+            await builder.RunService();
         }
     }
 }

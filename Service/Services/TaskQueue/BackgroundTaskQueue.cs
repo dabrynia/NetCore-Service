@@ -12,7 +12,7 @@ namespace Service.Services.TaskQueue
         private ConcurrentQueue<Func<CancellationToken, Task>> workItems = new ConcurrentQueue<Func<CancellationToken, Task>>();
         private SemaphoreSlim signal = new SemaphoreSlim(0);
 
-        public int Size { get; }
+        public int Size => workItems.Count;
 
         public async Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken)
         {
