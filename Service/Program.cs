@@ -32,7 +32,7 @@ namespace Service
                     services.AddHostedService<WorkerService>();
 
                     services.AddSingleton<Settings>();
-                    services.AddSingleton<TaskProcessor>();
+                    services.AddSingleton<ITaskProcessor, TaskProcessor>();
                     services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
                 });
 

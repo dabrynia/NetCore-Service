@@ -32,7 +32,7 @@ namespace Service.Services
             {
                 logger.LogInformation("Process task started");
 
-                for(int i = 0; i < 2; ++i) DoWork();
+                for (int i = 0; i < 2; ++i) DoWork();
 
                 logger.LogInformation("Process task finished");
                 Monitor.Exit(syncRoot);
@@ -47,7 +47,7 @@ namespace Service.Services
         {
             var number = random.Next(20);
 
-            var processor = services.GetRequiredService<TaskProcessor>();
+            var processor = services.GetRequiredService<ITaskProcessor>();
             var queue = services.GetRequiredService<IBackgroundTaskQueue>();
 
             queue.QueueBackgroundWorlItem(token =>

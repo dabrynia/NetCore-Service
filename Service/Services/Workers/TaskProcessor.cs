@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Service.Services.Workers
 {
-    public class TaskProcessor
+    public class TaskProcessor : ITaskProcessor
     {
-        private readonly ILogger<TaskProcessor> logger;
+        private readonly ILogger<ITaskProcessor> logger;
         private readonly Settings settings;
 
-        public TaskProcessor(ILogger<TaskProcessor> logger, Settings settings)
+        public TaskProcessor(ILogger<ITaskProcessor> logger, Settings settings)
         {
             this.logger = logger;
             this.settings = settings;
