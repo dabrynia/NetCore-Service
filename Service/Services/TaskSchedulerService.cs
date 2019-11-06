@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Service.Services
 {
+    /// <summary>
+    /// Помещает задачи в очередь
+    /// </summary>
     public class TaskSchedulerService : IHostedService, IDisposable
     {
         private Timer timer;

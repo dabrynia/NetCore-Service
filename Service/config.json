@@ -1,5 +1,13 @@
 {
-  "WorkersCount": 2,
-  "RunInterval": 5,
-  "ResultPath": "D:\\result.txt"
+  "main": {
+    "WorkersCount": 2,
+    "RunInterval": 5,
+    "ResultPath": "D:\\result.txt"
+  },
+  "RMQConnetion": {
+    "UserName": "idoroh",
+    "Password": "Qq123456",
+    "HostName": "192.168.230.71",
+    "Port": 15672
+  }
 }

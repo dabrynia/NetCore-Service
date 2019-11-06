@@ -32,6 +32,7 @@ namespace Service
                     services.AddHostedService<WorkerService>();
 
                     services.AddSingleton<Settings>();
+                    services.AddSingleton<RMQConnectionSettings>();
                     services.AddSingleton<ITaskProcessor, TaskProcessor>();
                     services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
                 });

@@ -33,4 +33,8 @@
     <Content Include="**\*.json" Exclude="bin\**\*;obj\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\RabbitMQ\" />
+  </ItemGroup>
+
 </Project>
