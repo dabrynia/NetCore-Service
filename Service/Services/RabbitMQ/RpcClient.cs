@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Service.Services.RabbitMQ
 {
-    public class RpcClient
+    public class RpcClient : IDisposable
     {
         private readonly ILogger<RpcClient> logger;
         private readonly RMQConnectionSettings connectionSettings;
@@ -98,6 +98,14 @@ namespace Service.Services.RabbitMQ
             };
         }
 
+        #endregion
+
+        #region IDisposable
+        public void Dispose()
+        {
+            Close();
+            connection.Dispose();
+        }
         #endregion
     }
 }
