@@ -1,6 +1,6 @@
 {
   "main": {
-    "WorkersCount": 2,
+    "WorkersCount": 1,
     "RunInterval": 5,
     "ResultPath": "D:\\result.txt"
   },
@@ -9,5 +9,9 @@
     "Password": "Qq123456",
     "HostName": "192.168.230.71",
     "Port": 15672
+  },
+  "RMQChannel": {
+    "ExchangeName": "",
+    "QueueName": "rpc_queue"
   }
 }

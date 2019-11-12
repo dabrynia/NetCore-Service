@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Service.Models;
+using Service.Services.RabbitMQ;
 using Service.Services.TaskQueue;
 using Service.Services.Workers;
 using System;
@@ -50,12 +51,13 @@ namespace Service.Services
         {
             var number = random.Next(20);
 
-            var processor = services.GetRequiredService<ITaskProcessor>();
+            //var processor = services.GetRequiredService<ITaskProcessor>();
+            var rpcClient = services.GetRequiredService<RpcClient>();
             var queue = services.GetRequiredService<IBackgroundTaskQueue>();
 
             queue.QueueBackgroundWorlItem(token =>
             {
-                return processor.RunAsync(number, token);
+                return rpcClient.RunAsync(number.ToString(), token);
             });
         }
 
