@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Service.Extensions.HostExtensions;
+using Service.Extensions.LoggerExtensions;
 using Service.Models;
 using Service.Services;
 using Service.Services.RabbitMQ;
@@ -26,6 +27,7 @@ namespace Service
                 {
                     configLogging.AddConsole();
                     configLogging.AddDebug();
+                    configLogging.AddFile();
                 })
                 .ConfigureServices(services =>
                 {

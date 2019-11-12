@@ -1,0 +1,2 @@
+﻿From : https://github.com/andrewlock/NetEscapades.Extensions.Logging/tree/master/src/NetEscapades.Extensions.Logging.RollingFile/Internal
+Article : https://andrewlock.net/creating-a-rolling-file-logging-provider-for-asp-net-core-2-0/
