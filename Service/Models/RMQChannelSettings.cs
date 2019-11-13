@@ -11,5 +11,8 @@ namespace Service.Models
 
         public string QueueName => Section.GetValue<string>("QueueName");
         public string ExchangeName => Section.GetValue<string>("ExchangeName");
+        public string RoutingKey => Section.GetValue<string>("RoutingKey");
+        public string Type => Section.GetValue<string>("Type");
+        public bool Durable => Section.GetValue<bool>("Durable");
     }
 }

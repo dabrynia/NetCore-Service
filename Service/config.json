@@ -11,7 +11,13 @@
     "Port": 15672
   },
   "RMQChannel": {
-    "ExchangeName": "",
-    "QueueName": "rpc_queue"
+    "ExchangeName": "E1",
+    "QueueName": "Q1",
+    "RoutingKey": "test.send",
+    "Type": "topic",
+    "Durable": "true"
+  },
+  "DirectumWebService": {
+    "Url": ""
   }
 }

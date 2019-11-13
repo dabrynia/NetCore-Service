@@ -11,25 +11,25 @@ namespace Service.Services.RabbitMQ
 {
     public class RpcClient : IDisposable
     {
-        private readonly ILogger<RpcClient> logger;
-        private readonly RMQConnectionSettings connectionSettings;
-        private readonly RMQChannelSettings channelSettings;
+        private readonly ILogger<RpcClient> _logger;
+        private readonly RMQChannelSettings _channelSettings;
+        private readonly IConnector _connector;
+        private readonly IModel _channel;
+        private readonly string _replyQueueName;
 
-        private readonly IConnection connection;
-        private readonly IModel channel;
-        private EventingBasicConsumer consumer;
+        private EventingBasicConsumer _consumer;
 
-        private readonly string replyQueueName;
+        public IConnection Connection { get { return _connector.Connection; } }
 
-        public RpcClient(ILogger<RpcClient> logger, RMQConnectionSettings connectionSettings, RMQChannelSettings channelSettings)
+        public RpcClient(ILogger<RpcClient> logger, IConnector connector, RMQChannelSettings channelSettings)
         {
-            this.logger = logger;
-            this.connectionSettings = connectionSettings;
-            this.channelSettings = channelSettings;
+            _logger = logger;
+            _connector = connector;
+            _channelSettings = channelSettings;
 
-            connection = CreateRabbitConnection();
-            channel = connection.CreateModel();
-            replyQueueName = channel.QueueDeclare().QueueName;
+            _channel = Connection.CreateModel();
+            // create a non-durable, exclusive, autodelete queue with a generated name
+            _replyQueueName = _channel.QueueDeclare().QueueName;
 
             CreateConsumer();
         }
@@ -41,70 +41,45 @@ namespace Service.Services.RabbitMQ
             var messageBytes = Encoding.UTF8.GetBytes(massege);
             var correlationId = Guid.NewGuid().ToString();
 
-            IBasicProperties properties = channel.CreateBasicProperties();
+            IBasicProperties properties = _channel.CreateBasicProperties();
             properties.CorrelationId = correlationId;
-            properties.ReplyTo = replyQueueName;
+            properties.ReplyTo = _replyQueueName;
 
             await Task.Run(() =>
             {
-                channel.BasicPublish(exchange: channelSettings.ExchangeName,
-                                        routingKey: channelSettings.QueueName,
-                                        basicProperties: properties,
-                                        body: messageBytes);
+                _channel.BasicPublish(exchange: _channelSettings.ExchangeName,
+                                      routingKey: _channelSettings.QueueName,
+                                      basicProperties: properties,
+                                      body: messageBytes);
 
-                logger.LogInformation($"[->] Sent '{channelSettings.QueueName}':'{massege}'");
+                _logger.LogInformation($"[->] Sent '{_channelSettings.QueueName}':'{massege}'");
 
-                channel.BasicConsume(consumer: consumer,
-                                        queue: replyQueueName,
-                                        autoAck: true);
+                _channel.BasicConsume(consumer: _consumer,
+                                      queue: _replyQueueName,
+                                      autoAck: true);
 
             }, token);
         }
 
-        public void Close()
-        {
-            connection.Close();
-        }
-
         #region private methods
-        private IConnection CreateRabbitConnection()
-        {
-            ConnectionFactory factory = new ConnectionFactory
-            {
-                UserName = connectionSettings.UserName,
-                Password = connectionSettings.Password,
-                HostName = connectionSettings.HostName,
-            };
-
-            return factory.CreateConnection();
-        }
-
-        private IModel CreateRabbitChannel(IConnection connection)
-        {
-            IModel model = connection.CreateModel();
-
-            return model;
-        }
-
         private void CreateConsumer()
         {
-            this.consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, ea) =>
+            _consumer = new EventingBasicConsumer(_channel);
+            _consumer.Received += (model, ea) =>
             {
                 var body = ea.Body;
                 var response = Encoding.UTF8.GetString(body);
 
-                logger.LogInformation($"[<-] Response : {response}");
+                _logger.LogInformation($"[<-] Response : {response}");
             };
         }
-
         #endregion
 
         #region IDisposable
         public void Dispose()
         {
-            Close();
-            connection.Dispose();
+            _channel.Dispose();
+            Connection.Dispose();
         }
         #endregion
     }

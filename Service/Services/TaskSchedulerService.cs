@@ -20,6 +20,7 @@ namespace Service.Services
         private readonly IServiceProvider services;
         private readonly Settings settings;
         private readonly ILogger<TaskSchedulerService> logger;
+        private readonly IConnector connector;
         private readonly Random random = new Random();
         private readonly object syncRoot = new object();
 
@@ -28,6 +29,7 @@ namespace Service.Services
             this.services = services;
             this.settings = services.GetRequiredService<Settings>();
             this.logger = services.GetRequiredService<ILogger<TaskSchedulerService>>();
+            this.connector = services.GetRequiredService<IConnector>();
         }
 
         private void ProcessTask()
@@ -36,7 +38,11 @@ namespace Service.Services
             {
                 logger.LogInformation("Process task started");
 
-                for (int i = 0; i < 2; ++i) DoWork();
+                if (!connector.IsConnected) connector.CreateRabbitConnection();
+
+                CheckRabbitMQ();
+
+                //for (int i = 0; i < 3; ++i) DoWork();
 
                 logger.LogInformation("Process task finished");
                 Monitor.Exit(syncRoot);
@@ -45,6 +51,17 @@ namespace Service.Services
             {
                 logger.LogInformation("Processing is currently in progress. Skippeed");
             }
+        }
+
+        private void CheckRabbitMQ()
+        {
+            var Consumer = services.GetRequiredService<Consumer>();
+            var queue = services.GetRequiredService<IBackgroundTaskQueue>();
+
+            queue.QueueBackgroundWorlItem(token =>
+            {
+                return Consumer.CallAsync(token);
+            });
         }
 
         private void DoWork()

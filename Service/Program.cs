@@ -6,6 +6,7 @@ using Service.Extensions.HostExtensions;
 using Service.Extensions.LoggerExtensions;
 using Service.Models;
 using Service.Services;
+using Service.Services.Directum;
 using Service.Services.RabbitMQ;
 using Service.Services.TaskQueue;
 using Service.Services.Workers;
@@ -37,8 +38,12 @@ namespace Service
                     services.AddSingleton<Settings>();
                     services.AddSingleton<RMQConnectionSettings>();
                     services.AddSingleton<RMQChannelSettings>();
+                    services.AddSingleton<DirectumWebServiceSettings>();
                     services.AddSingleton<ITaskProcessor, TaskProcessor>();
+                    services.AddSingleton<IConnector, Connector>();
                     services.AddSingleton<RpcClient>();
+                    services.AddSingleton<Consumer>();
+                    services.AddSingleton<WebService>();
                     services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
                 });
 
