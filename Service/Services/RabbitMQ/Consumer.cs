@@ -81,7 +81,14 @@ namespace Service.Services.RabbitMQ
                     return webService.RunAsync(response, token);
                 });
 
-                _channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                try
+                {
+                    _channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                }
             };
         }
 

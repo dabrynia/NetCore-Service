@@ -18,6 +18,6 @@
     "Durable": "true"
   },
   "DirectumWebService": {
-    "Url": ""
+    "Url": "http://dirterm58.mns-main.nalog.gov.by:82/IntegrationService.svc?wsdl"
   }
 }

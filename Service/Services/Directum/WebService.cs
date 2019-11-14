@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Service.Models;
+using Service.Properties;
 using System;
 using System.IO;
 using System.Net;
@@ -27,7 +28,7 @@ namespace Service.Services.Directum
             {
                 _logger.LogInformation($"[.]Получено сообщение: {message}");
 
-                if (SendTestPostRequest(message))
+                if (SendTestPostRequest(SetSOAPRequestData(message)))
                 {
                     _logger.LogInformation($"[->]Отправлено сообщение: {message}");
                 }
@@ -39,8 +40,9 @@ namespace Service.Services.Directum
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_connectionSettings.Url);
             request.Method = "POST";
-            request.Host = "SoapPort";
-            request.ContentType = "text/xml; charset=utf-8";
+            request.Host = Resources.SoapPort;
+            request.Headers.Add("SOAPAction", Resources.SOAPAction);
+            request.ContentType = Resources.ContentType;
 
             return request;
         }
@@ -58,9 +60,9 @@ namespace Service.Services.Directum
 
         private string SetSOAPRequestData(string data)
         {
-            string soapData = $"<soapenv:Envelope xmlns:int=http:///IntegrationWebService xmlns:soapenv='http:///schemas.xmlsoap.org/soap/envelope'><soapenv:Body><int:ReferencesUpdate><int:XMLPackage><![CDATA[{data}]]></int:XMLPackage></int:ReferencesUpdate></soapenv:Body></soapenv:Envelope>";
+            string soapData = string.Format(Resources.soapData, data);
 
-            return "";
+            return soapData;
         }
 
         private bool SendTestPostRequest(string data)
